@@ -1,20 +1,26 @@
-from app.db import get_connection, release_connection, RealDictCursor
-
+from app.utils.consulta import consulta_general, consulta_por_condicion
 # app/models/usuario.py
 def obtener_usuarios():
-    conn = get_connection()
-    try:
-        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
-            cursor.execute("SELECT * FROM usuario;")
-            productos = cursor.fetchall()
-            return productos
-    except Exception as e:
-        print("Error al obtener productos:", e)
-        return []
-    finally:
-        release_connection(conn)
+    return consulta_general("usuario")
+def obtener_usuario_por_id(usuario_id):
+    return consulta_por_condicion("usuario", "id", usuario_id)
+def obtener_usuario_por_email(email):
+    return consulta_por_condicion("usuario", "email", email)
+def obtener_usuario_por_nombre(nombre):
+    return consulta_por_condicion("usuario", "nombre", nombre)
+def obtener_usuario_por_telefono(telefono):
+    return consulta_por_condicion("usuario", "telefono", telefono)  
+def obtener_usuario_por_rol(rol):
+    return consulta_por_condicion("usuario", "rol", rol)
+def obtener_usuario_por_estado(estado):
+    return consulta_por_condicion("usuario", "ACTIVO", estado)
+def obtener_usuario_por_dni(dni):
+    return consulta_por_condicion("usuario", "dni", dni)
+def obtener_usuario_por_fecha(periodo, fecha):
+    return consulta_por_condicion("usuario", f"DATE_PART(\'{periodo}\'),FECHA_REGISTRO", fecha)
+
 if __name__ == "__main__":
-    usuarios = obtener_usuarios()
-    for usuario in usuarios:
-        for clave,valor in usuario.items():
-            print(f"{clave}: {valor}")
+    # Ejemplo de uso
+    #usuarios = obtener_usuarios()
+    usuarios= obtener_usuario_por_dni(45262093)
+    print(usuarios)
