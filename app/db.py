@@ -2,8 +2,9 @@ from psycopg2 import pool
 from psycopg2.extras import RealDictCursor
 import config
 
-# app/db.py
-# Configuración del pool de conexiones
+#app/db.py
+# Configuración del pool de conexiones a la base de datos PostgreSQL
+# Crear el pool de conexiones
 try:
     connection_pool = pool.SimpleConnectionPool(
         minconn=1,
