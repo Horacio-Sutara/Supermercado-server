@@ -1,4 +1,4 @@
-from app.db import get_connection, release_connection, RealDictCursor
+from app.db import get_connection, release_connection
 # app/utils/insert.py
 
 def insertar_datos(entidad,columnas,valores):
