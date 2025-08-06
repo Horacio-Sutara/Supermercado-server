@@ -21,7 +21,7 @@ def obtener_usuario_por_estado(estado):
 def obtener_usuario_por_dni(dni):
     return consulta_por_condicion("usuario", "dni", dni)
 def obtener_usuario_por_fecha(periodo, fecha):
-    return consulta_por_condicion("usuario", f"DATE_PART(\'{periodo}\'),FECHA_REGISTRO", fecha)
+    return consulta_por_condicion("usuario", f"DATE_PART(\'{periodo}\',FECHA_REGISTRO)", fecha)
 
 def insertar_usuario(nombre, apellido, dni, contraseña, correo,rol="USER",activo=True,telefono=None):
     entidad = "usuario"
@@ -30,22 +30,38 @@ def insertar_usuario(nombre, apellido, dni, contraseña, correo,rol="USER",activ
     insertar_datos(entidad, columnas, valores)
     print("Usuario insertado con éxito.")
 
-def actualizar_id_usuario(condicion,nuevo_id):
-    entidad = "usuario"
-    columnas = ["id"]
-    valores = (nuevo_id)
-    condicion= f"id = {condicion}"
-    print(condicion)
+
+def actualizar_por_id_usuario(columnas,valores,condicion):
+    entidad="usuario"
+    condicion=f"id = {condicion}"
     actualizar_datos(entidad, columnas, valores, condicion)
-    print("Usuario actualizado con éxito.")
 
 
+
+
+def devolver_columna_usuario(columna):
+    usuarios=obtener_usuarios()
+    valores=[]
+    for usuario in usuarios:
+        for key, value in usuario.items():
+            if key == columna:
+                valores.append(value)
+    return valores
+
+def devolver_columna(columna,usuarios):
+    valores=[]
+    for usuario in usuarios:
+        for key, value in usuario.items():
+            if key == columna:
+                valores.append(value)
+    return valores
 
 
 if __name__ == "__main__":
     # Ejemplo de uso
-    actualizar_id_usuario(7,"3")
-    usuarios = obtener_usuarios()
-    #usuarios= obtener_usuario_por_dni(45262093)
+    usuarios = obtener_usuario_por_fecha("day","05")
+    print(devolver_columna("rol", usuarios))
+            #print(usuario)
+    #usuarios= obtener_usuario_por_dni(11111111)
     #insertar_usuario("Pedro", "Gómez", 11111111, "admin123","user@gmail.com", "USER", True, "1234567891")
-    print(usuarios)
+    #print(usuarios)
